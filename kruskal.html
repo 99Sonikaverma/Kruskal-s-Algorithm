@@ -1,0 +1,74 @@
+//<script>
+var Vertex = 5;
+var parent = Array(Vertex).fill(0);
+var INFINITY = 1000000000;
+
+// Find set of vertex i
+function find(i)
+{
+	while (parent[i] != i)
+		i = parent[i];
+	return i;
+}
+
+function union1(i, j)
+{
+	var a = find(i);
+	var b = find(j);
+	parent[a] = b;
+}
+
+
+function kruskalMST(cost)
+{
+	var minimumcost = 0; 
+	for (var i = 0; i < Vertex; i++)
+		parent[i] = i;
+
+	// Include minimum weight edges one by one
+	var count_edge = 0;
+	while (count_edge < Vertex - 1)
+	{
+		var minimum = INFINITY	, a = -1, b = -1;
+		for (var i = 0; i < Vertex; i++)
+		{
+			for (var j = 0; j < Vertex; j++)
+			{
+				if (find(i) != find(j) && cost[i][j] < minimum)
+				{
+					minimum = cost[i][j];
+					a = i;
+					b = j;
+				}
+			}
+		}
+
+		union1(a, b);
+		document.write(`Edge ${count_edge++}:(${a},
+		${b}) cost:${minimum} <br>`);
+		minimumcost += minimum;
+	}
+	document.write(`<br> Minimum cost= ${minimumcost} <br>`);
+}
+
+// Driver code
+
+/* Let us create the following graph
+		2 3
+	(0)--(1)--(2)
+	| / \ |
+	6| 8/ \5 |7
+	| /	 \ |
+	(3)-------(4)
+			9		 */
+var cost = [
+	[INFINITY, 2, INFINITY, 6, INFINITY],
+	[2, INFINITY, 3, 8, 5],
+	[INFINITY, 3, INFINITY, INFINITY, 7],
+	[6, 8, INFINITY, INFINITY, 9],
+	[INFINITY, 5, 7, 9, INFINITY]];
+// Print the solution
+kruskalMST(cost);
+
+
+//</script>
